@@ -3,7 +3,7 @@
 
 When configuring SSL certificates most of the steps are pretty straight forward. But there's a small step if you forget can lead to the following annoying error, even where your certificate is verified:
 
-![image](https://s3.amazonaws.com/f.cl.ly/items/2R1t0u0O1s2z430P1X3d/Image%202015-03-02%20at%2014%3A44%3A05.png =300x)
+![image](./ssl-error.png =300x)
 
 Again, the steps to create the CSR are pretty straight forward. The following instructions asume that the certificate is one from **GoDaddy**, but I'm pretty sure that this applies to certificates from any other vendor.
 
@@ -13,7 +13,7 @@ You first need to create the key:
 
     # GoDaddy requires you to generate a 2048 key in size.
     openssl genrsa -out www.mysite.com.key 2048
-    
+
 Then your create the Certificate Signing Request or CSR:
 
     # The name of the files can be whatever you want, just be consistent.
@@ -35,7 +35,7 @@ After that, you should have to files: the key, `www.mysite.com.key` and the CSR,
 
 ### 2 - Get your SSL Certificate.
 
-Get your certificate. In this case, the certificate was bought on GoDaddy.com. I won't go on the steps to get the certificate, but I think for most vendors is almost the same. 
+Get your certificate. In this case, the certificate was bought on GoDaddy.com. I won't go on the steps to get the certificate, but I think for most vendors is almost the same.
 
 [GoDaddy SSL Certificates](https://uk.godaddy.com/ssl/ssl-certificates.aspx)
 
@@ -54,13 +54,13 @@ Before you point the configuration settings to your brand new certificates you n
 In the directory you uploaded the certificate and the bundle run the following:
 
     cat www.mysite.com.crt gd_bundle.crt > www.mysite.com_combined.crt
-    
+
 Now, the `www.mysite.com_combined.crt` is the one you have to point the Nginx configuration settings to.
 
     server {
         listen 443;
         server_name www.mysite.com;
-        
+
         ssl on;
         ssl_certificate     /var/certificates/www.mysite.com_combined.crt;
         ssl_certificate_key /var/certificates/www.mysite.com.key;
